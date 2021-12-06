@@ -1,11 +1,21 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+)
 
-func helloworld() string {
-	return "Hello World!!"
+func index(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "<h1>Hello World</h1>")
+}
+
+func check(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "<h1>Health check</h1>")
 }
 
 func main() {
-	fmt.Println(helloworld())
+	http.HandleFunc("/", index)
+	http.HandleFunc("/health_check", check)
+	fmt.Println("Server starting...")
+	http.ListenAndServe(":3000", nil)
 }
